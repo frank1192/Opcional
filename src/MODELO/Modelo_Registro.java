@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package MODELO;
 
 /**
@@ -9,5 +6,48 @@ package MODELO;
  * @author Franklin Aguirre
  */
 public class Modelo_Registro {
+    private int Identificacion;
+     private String Apellidos;
+    private String Nombres;
+    private String Deporte;
+
+    public int getIdentificacion() {
+        return Identificacion;
+    }
+
+    public void setIdentificacion(int Identificacion) {
+        this.Identificacion = Identificacion;
+    }
+   
+
+   
+
+    public String getApellidos() {
+        return Apellidos;
+    }
+
+    public void setApellidos(String Apellidos) {
+        this.Apellidos = Apellidos;
+    }
+
+    public String getNombres() {
+        return Nombres;
+    }
+
+    public void setNombres(String Nombres) {
+        this.Nombres = Nombres;
+    }
+
+    public String getDeporte() {
+        return Deporte;
+    }
+
+    public void setDeporte(String Deporte) {
+        this.Deporte = Deporte;
+    }
     
+    @Override
+    public String toString() {
+        return "{" + "Identificacion: " + this.getIdentificacion()+ ", Nombres: " + this.getNombres() + ", Apellidos: " + this.getApellidos() + ", Deporte: " + this.getDeporte()+   "}";
+    }
 }
