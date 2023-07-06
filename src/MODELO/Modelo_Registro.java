@@ -11,6 +11,15 @@ public class Modelo_Registro {
     private String Nombres;
     private String Deporte;
 
+    
+    public Modelo_Registro(Integer Identificacion, String Nombres,String Apellidos,String Deporte) {
+        this.Identificacion = Identificacion;
+        this.Nombres = Nombres;
+        this.Apellidos= Apellidos;
+        this.Deporte= Deporte;
+        
+    }
+    
     public int getIdentificacion() {
         return Identificacion;
     }
@@ -18,10 +27,7 @@ public class Modelo_Registro {
     public void setIdentificacion(int Identificacion) {
         this.Identificacion = Identificacion;
     }
-   
-
-   
-
+ 
     public String getApellidos() {
         return Apellidos;
     }
