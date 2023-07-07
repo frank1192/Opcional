@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -99,6 +100,17 @@ public class DAO_Registro {
     public void eliminarRegistro(int identificacion) {
     ListaParticipantes.remove(identificacion);
     generarCSV();
+    }
+    public void modificarRegistro(int identificacion, String nombres, String apellidos, String deporte) {
+    if (ListaParticipantes.containsKey(identificacion)) {
+        Modelo_Registro registro = ListaParticipantes.get(identificacion);
+        registro.setNombres(nombres);
+        registro.setApellidos(apellidos);
+        registro.setDeporte(deporte);
+        generarCSV();
+    } else {
+        JOptionPane.showMessageDialog(null, "El registro con identificación " + identificacion + " no existe");
+    }
 }
     
 }

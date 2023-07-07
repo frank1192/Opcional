@@ -11,10 +11,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 /**
@@ -48,19 +52,49 @@ public class Controlador_Registro implements ActionListener{
         Vista_Registro.setTitle("Registro de Competencia");
         Vista_Registro.setLocationRelativeTo(null);
         cargarDeportes();
-        ActualizarJlist();
+        ActualizarJList();
     }
-    public void ActualizarJlist(){
-        File archivo=null;
-        Object FileReaderfileR = null;
-        BufferedReader BuferedR= null;
-//        try{
-//            archivo= new File ("src\\Persistencia\\Registro_Persistencia.txt");
-//            FileR
-//        }catch(exception e){}
-//        
-        
+    public void ActualizarJList() {
+    File archivo = null;
+    FileReader fileReader = null;
+    BufferedReader bufferedReader = null;
+
+    try {
+        archivo = new File("src\\Persistencia\\Registro_Persistencia.txt");
+        fileReader = new FileReader(archivo);
+        bufferedReader = new BufferedReader(fileReader);
+
+        DefaultListModel<String> lista = new DefaultListModel<>();
+        lista.addElement("Estos son los datos de los usuarios Registrados");
+
+        String informacion;
+        while ((informacion = bufferedReader.readLine()) != null) {
+            lista.addElement(informacion);
+        }
+
+        Vista_Registro.jList1.setModel(lista);
+
+    } catch (FileNotFoundException e) {
+        // Manejar la excepción de archivo no encontrado
+        e.printStackTrace();
+    } catch (IOException e) {
+        // Manejar la excepción de lectura/escritura
+        e.printStackTrace();
+    } finally {
+        // Cerrar los recursos
+        try {
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+            if (fileReader != null) {
+                fileReader.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+}
+
     public void LimpiarCampos(){
         Vista_Registro.txtApellidos.setText("");
         Vista_Registro.txtIdentificacion.setText("");
@@ -114,6 +148,7 @@ public class Controlador_Registro implements ActionListener{
             Vista_Registro.cmbDeportes.setEnabled(false);
             Vista_Registro.btnNuevo.setEnabled(true);
             LimpiarCampos();
+            ActualizarJList();
 
         }
         if (e.getSource() == Vista_Registro.btnCancelar) {
@@ -144,7 +179,42 @@ public class Controlador_Registro implements ActionListener{
             JOptionPane.showMessageDialog(null, "El registro con identificación " + identificacion + " no existe");
         }
     }
-}
+    ActualizarJList();
+    }
+        if (e.getSource() == Vista_Registro.btnModificar) {
+        String identificacionStr = JOptionPane.showInputDialog(null, "Ingrese la identificación del registro a modificar:");
+        if (identificacionStr != null && !identificacionStr.isEmpty()) {
+            int identificacion = Integer.parseInt(identificacionStr);
+            Modelo_Registro registro = DAO_Registro.getProducto(identificacion);
+            if (registro != null) {
+                // Obtener los nuevos valores del registro a modificar
+                String nuevosNombres = JOptionPane.showInputDialog(null, "Ingrese los nuevos nombres:");
+                String nuevosApellidos = JOptionPane.showInputDialog(null, "Ingrese los nuevos apellidos:");
 
+                List<String> Deportes = DAO_Deportes.GetDeportes();
+                DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>(Deportes.toArray(String[]::new));
+                JComboBox<String> comboBoxDeportes = new JComboBox<>();
+                
+                comboBoxDeportes.setModel(comboBoxModel);
+                cargarDeportes();
+
+                // Mostrar el JComboBox en un JOptionPane personalizado
+                Object[] message = {
+                    "Deporte:", comboBoxDeportes,
+                };
+                int option = JOptionPane.showConfirmDialog(null, message, "Modificar registro", JOptionPane.OK_CANCEL_OPTION);
+                if (option == JOptionPane.OK_OPTION) {
+                    String nuevoDeporte = (String) comboBoxDeportes.getSelectedItem();
+
+                    // Modificar el registro
+                    DAO_Registro.modificarRegistro(identificacion, nuevosNombres, nuevosApellidos, nuevoDeporte);
+                    JOptionPane.showMessageDialog(null, "Registro modificado exitosamente");
+                    ActualizarJList();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "El registro con identificación " + identificacion + " no existe");
+            }
+        }
+        }
     }
 }
