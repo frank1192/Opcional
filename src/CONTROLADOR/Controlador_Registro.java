@@ -198,7 +198,6 @@ public class Controlador_Registro implements ActionListener{
                 comboBoxDeportes.setModel(comboBoxModel);
                 cargarDeportes();
 
-                // Mostrar el JComboBox en un JOptionPane personalizado
                 Object[] message = {
                     "Deporte:", comboBoxDeportes,
                 };
@@ -206,7 +205,7 @@ public class Controlador_Registro implements ActionListener{
                 if (option == JOptionPane.OK_OPTION) {
                     String nuevoDeporte = (String) comboBoxDeportes.getSelectedItem();
 
-                    // Modificar el registro
+
                     DAO_Registro.modificarRegistro(identificacion, nuevosNombres, nuevosApellidos, nuevoDeporte);
                     JOptionPane.showMessageDialog(null, "Registro modificado exitosamente");
                     ActualizarJList();
