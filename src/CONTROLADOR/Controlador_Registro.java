@@ -46,6 +46,7 @@ public class Controlador_Registro implements ActionListener{
         this.Vista_Registro.btnCancelar.addActionListener(this);
         this.Vista_Registro.btnModificar.addActionListener(this);
         this.Vista_Registro.btnEliminar.addActionListener(this);
+        this.Vista_Registro.btnSalir.addActionListener(this);
 
     }
     public void iniciar(){
@@ -215,5 +216,9 @@ public class Controlador_Registro implements ActionListener{
             }
         }
         }
+        if (e.getSource() == Vista_Registro.btnSalir){
+        this.Vista_Registro.dispose();
+        }
+        
     }
 }
