@@ -96,5 +96,9 @@ public class DAO_Registro {
     public static Map<Integer, Modelo_Registro> getListaParticipantes() {
         return ListaParticipantes;
     }
+    public void eliminarRegistro(int identificacion) {
+    ListaParticipantes.remove(identificacion);
+    generarCSV();
+}
     
 }
