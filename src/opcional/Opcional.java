@@ -20,6 +20,7 @@ public class Opcional {
         DAO_Deportes DAO_Deportes = new DAO_Deportes();
         Modelo_Registro Modelo_Registro= new Modelo_Registro(0,"","","");
         DAO_Registro DAO_Registro= new DAO_Registro();
+        DAO_Registro.restaurarDatos();
         Controlador_Registro Controlador_Registro =new Controlador_Registro( Vista_Registro,Modelo_Registro ,DAO_Registro,DAO_Deportes);
         
         Controlador_Registro.iniciar();

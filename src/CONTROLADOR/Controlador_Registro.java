@@ -30,6 +30,7 @@ public class Controlador_Registro implements ActionListener{
         this.Modelo_Registro = Modelo_Registro;
         this.DAO_Deportes = DAO_Deportes;
         this.DAO_Registro = new DAO_Registro();
+        DAO_Registro.restaurarDatos();
         
         //funcionalidad de los botones
         this.Vista_Registro.btnNuevo.addActionListener(this);
@@ -42,6 +43,11 @@ public class Controlador_Registro implements ActionListener{
         Vista_Registro.setLocationRelativeTo(null);
         cargarDeportes();
     }
+    public void LimpiarCampos(){
+        Vista_Registro.txtApellidos.setText("");
+        Vista_Registro.txtIdentificacion.setText("");
+        Vista_Registro.txtNombres.setText("");
+    }
     private void cargarDeportes() {
         List<String> Deportes = DAO_Deportes.GetDeportes();
         DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>(Deportes.toArray(String[]::new));
@@ -51,33 +57,56 @@ public class Controlador_Registro implements ActionListener{
    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == Vista_Registro.btnNuevo) {
-        Vista_Registro.btnGrabar.setEnabled(true);
-        Vista_Registro.btnCancelar.setEnabled(true);
-        Vista_Registro.txtIdentificacion.setEnabled(true);
-        Vista_Registro.txtApellidos.setEnabled(true);
-        Vista_Registro.txtNombres.setEnabled(true);
-        Vista_Registro.cmbDeportes.setEnabled(true);
-        Vista_Registro.btnNuevo.setEnabled(false);
+            Vista_Registro.btnGrabar.setEnabled(true);
+            Vista_Registro.btnCancelar.setEnabled(true);
+            Vista_Registro.txtIdentificacion.setEnabled(true);
+            Vista_Registro.txtApellidos.setEnabled(true);
+            Vista_Registro.txtNombres.setEnabled(true);
+            Vista_Registro.cmbDeportes.setEnabled(true);
+            Vista_Registro.btnNuevo.setEnabled(false);
 
         }
         if (e.getSource() == Vista_Registro.btnGrabar) {
-        Vista_Registro.btnGrabar.setEnabled(false);
-        Vista_Registro.btnCancelar.setEnabled(false);
-        Vista_Registro.txtIdentificacion.setEnabled(false);
-        Vista_Registro.txtApellidos.setEnabled(false);
-        Vista_Registro.txtNombres.setEnabled(false);
-        Vista_Registro.cmbDeportes.setEnabled(false);
-        Vista_Registro.btnNuevo.setEnabled(true);
+            
+            int Identificacion = Integer.parseInt(Vista_Registro.txtIdentificacion.getText());
+            String Apellidos=Vista_Registro.txtApellidos.getText();
+            String Nombres= Vista_Registro.txtNombres.getText();
+            String Deporte= (String) Vista_Registro.cmbDeportes.getSelectedItem();
+            
+            Modelo_Registro Modelo_Registro = DAO_Registro.getProducto(Identificacion);
+            Map<Integer, Modelo_Registro> ListaParticipantes = DAO_Registro.getListaParticipantes();
+            if (Identificacion != 0) {
+    if (ListaParticipantes.containsKey(Identificacion)) {
+        JOptionPane.showMessageDialog(null, "El ID " + Identificacion + " ya existe");
+    } else {
+        DAO_Registro.registrar(Identificacion, Nombres, Apellidos, Deporte);
+        JOptionPane.showMessageDialog(null, "Paciente registrado exitosamente");
+        DAO_Registro.generarCSV();
+    }
+} else {
+    JOptionPane.showMessageDialog(null, "Por favor ingrese datos válidos");
+}
+
+            
+            Vista_Registro.btnGrabar.setEnabled(false);
+            Vista_Registro.btnCancelar.setEnabled(false);
+            Vista_Registro.txtIdentificacion.setEnabled(false);
+            Vista_Registro.txtApellidos.setEnabled(false);
+            Vista_Registro.txtNombres.setEnabled(false);
+            Vista_Registro.cmbDeportes.setEnabled(false);
+            Vista_Registro.btnNuevo.setEnabled(true);
+            LimpiarCampos();
 
         }
         if (e.getSource() == Vista_Registro.btnCancelar) {
-        Vista_Registro.btnGrabar.setEnabled(false);
-        Vista_Registro.btnCancelar.setEnabled(false);
-        Vista_Registro.txtIdentificacion.setEnabled(false);
-        Vista_Registro.txtApellidos.setEnabled(false);
-        Vista_Registro.txtNombres.setEnabled(false);
-        Vista_Registro.cmbDeportes.setEnabled(false);
-        Vista_Registro.btnNuevo.setEnabled(true);
+            Vista_Registro.btnGrabar.setEnabled(false);
+            Vista_Registro.btnCancelar.setEnabled(false);
+            Vista_Registro.txtIdentificacion.setEnabled(false);
+            Vista_Registro.txtApellidos.setEnabled(false);
+            Vista_Registro.txtNombres.setEnabled(false);
+            Vista_Registro.cmbDeportes.setEnabled(false);
+            Vista_Registro.btnNuevo.setEnabled(true);
+            LimpiarCampos();
 
         }
         
